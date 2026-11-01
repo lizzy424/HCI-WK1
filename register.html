@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Courses</title>
+
+    <style>
+    :root {
+        --royal-blue: #123d9a;
+        --royal-blue-dark: #0b2d72;
+        --dark-gold: #8a6a1f;
+        --gold-soft: #d7b35a;
+        --cream: #f7f4ee;
+        --panel: #edf2ff;
+        --text: #1e2d4d;
+        --muted: #586785;
+        --white: #ffffff;
+        --border: #d9e0f7;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: var(--cream);
+        color: var(--text);
+    }
+
+    header {
+        background: linear-gradient(90deg, var(--royal-blue-dark), var(--royal-blue));
+        padding: 20px 8%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(11, 45, 114, 0.18);
+    }
+
+    header strong {
+        font-size: 22px;
+        color: var(--white);
+    }
+
+    nav a {
+        text-decoration: none;
+        color: var(--white);
+        margin-left: 25px;
+        font-weight: bold;
+        opacity: 0.95;
+    }
+
+    nav a:hover {
+        color: var(--gold-soft);
+    }
+
+    main {
+        max-width: 650px;
+        margin: 45px auto;
+        padding: 35px;
+        background: var(--white);
+        border-radius: 18px;
+        box-shadow: 0 8px 30px rgba(11, 45, 114, 0.08);
+        border-top: 6px solid var(--dark-gold);
+    }
+
+    h1 {
+        color: var(--royal-blue-dark);
+        margin-bottom: 10px;
+    }
+
+    main > p {
+        color: var(--muted);
+        line-height: 1.6;
+    }
+
+    label {
+        display: block;
+        margin: 18px 0;
+    }
+
+    select {
+        width: 100%;
+        padding: 13px;
+        margin-top: 8px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: #fafbff;
+        font-size: 15px;
+        color: var(--text);
+    }
+
+    h3 {
+        color: var(--royal-blue-dark);
+        margin-top: 25px;
+    }
+
+    label:has(input[type="checkbox"]) {
+        background: #f5f7ff;
+        padding: 14px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    label:has(input[type="checkbox"]):hover {
+        background: #eef3ff;
+    }
+
+    input[type="checkbox"] {
+        accent-color: var(--royal-blue);
+        margin-right: 10px;
+    }
+
+    button {
+        background: linear-gradient(90deg, var(--dark-gold), var(--gold-soft));
+        color: var(--white);
+        border: none;
+        padding: 14px 22px;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 10px;
+        box-shadow: 0 6px 15px rgba(138, 106, 31, 0.25);
+    }
+
+    button:hover {
+        background: linear-gradient(90deg, var(--gold-soft), var(--dark-gold));
+    }
+
+    #total {
+        color: var(--royal-blue-dark);
+    }
+
+    #message {
+        color: var(--royal-blue);
+        font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+        header {
+            padding: 18px;
+        }
+
+        nav a {
+            margin-left: 10px;
+            font-size: 14px;
+        }
+
+        main {
+            margin: 20px;
+            padding: 22px;
+        }
+    }
+</style>
+    
+</head>
+
+<body>
+    <header>
+        <strong>BABCOCK REGISTRATION</strong>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="register.html">Register</a>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Course Registration</h1>
+        <form id="registrationForm">
+            <label for="semester">Select Semester</label>
+
+            <select id="semester" required>
+                <option value="">Choose semester</option>
+                <option>First Semester</option>
+                <option>Second Semester</option>
+            </select>
+
+            <h3>Available Courses</h3>
+            <label>
+                <input type="checkbox" class="course" value="3">
+                BU-SEN417 - Human Computer Interaction (3 units)
+            </label>
+
+            <label>
+                <input type="checkbox" class="course" value="2">
+                BU-CSC403 - Compiler Construction (2 units)
+            </label>
+
+            <label>
+                <input type="checkbox" class="course" value="3">
+                BU-COS419 -  Agile Development and Scrum(2 units)
+            </label>
+
+            <p>
+                Total Units: <strong id="total">0</strong>
+            </p>
+
+            <button type="submit">Submit Registration</button>
+            <p id="message"></p>
+        </form>
+    </main>
+
+    <script>
+        const courses = document.querySelectorAll(".course");
+        const total = document.getElementById("total");
+
+        courses.forEach(course => {
+            course.addEventListener("change", function() {
+                let units = 0;
+                courses.forEach(item => {
+                    if (item.checked) {
+                        units += Number(item.value);
+                    }
+                });
+
+                total.textContent = units;
+            });
+        });
+
+        document.getElementById("registrationForm")
+            .addEventListener("submit", function(event) {
+
+                event.preventDefault();
+                const semester = document.getElementById("semester").value;
+                const message = document.getElementById("message");
+
+                if (semester === "") {
+                    message.textContent = "Please select a semester.";
+                } else if (total.textContent === "0") {
+                    message.textContent = "Please select at least one course.";
+                } else {
+                    message.textContent = "Registration submitted successfully!";
+                }
+            });
+    </script>
+</body>
+</html>
